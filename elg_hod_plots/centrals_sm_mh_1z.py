@@ -12,7 +12,7 @@ import mpl_style
 plt.style.use(mpl_style.style1)
 
 path = '/gpfs/data/violeta/Galform_Out/v2.6.0/aquarius_trees/'
-model = 'MillGas/gp15newmg.anders/' #model = 'MillGas/gp14/'
+model = 'MillGas/gp15newmg/' #model = 'MillGas/gp14/'
 
 #############################
 line = 'OII3727' ; lline = '[OII]'
@@ -203,8 +203,6 @@ for iz,zsnap in enumerate(snap_list):
             nelgs_med[index,:] = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.5)
             nelgs_p1[index,:] = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.1)
             nelgs_p9[index,:] = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.9)
-            print inleg[index]
-            print nelgs_med,nelgs_p1,nelgs_p9
 
     # eBOSS 
     ind = np.where((mass_eboss>0) & (mh_eboss>0))
@@ -214,8 +212,6 @@ for iz,zsnap in enumerate(snap_list):
     neboss_med = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.5)
     neboss_p1 = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.1)
     neboss_p9 = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.9)
-    print 'eBOSS'
-    print neboss_med,neboss_p1,neboss_p9
 
     # DESI
     ind = np.where((mass_desi>0) & (mh_desi>0))
@@ -225,8 +221,6 @@ for iz,zsnap in enumerate(snap_list):
     ndesi_med = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.5)
     ndesi_p1 = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.1)
     ndesi_p9 = s.perc_2arrays(np.append(lbins,lmax),x,y,w,nmin,0.9)
-    print 'DESI'
-    print ndesi_med,ndesi_p1,ndesi_p9
 
     # Plot
     fig = plt.figure(figsize=(8.5,9.))
@@ -243,6 +237,8 @@ for iz,zsnap in enumerate(snap_list):
 
     # Plot the model predictions
     py = nall_med ; ind = np.where(py>-999.)
+    print 'All centrals ',model
+    print lhist[ind],py[ind],nall_p9[ind]-nall_p1[ind]
     ax.plot(lhist[ind],py[ind],color=cols[0],linestyle='-',\
                 label='All centrals')
     ax.plot(lhist[ind],nall_p1[ind],color=cols[0],linestyle='--')
@@ -250,6 +246,8 @@ for iz,zsnap in enumerate(snap_list):
 
     for index,ib in enumerate(bands):        
         py = nelgs_med[index,:] ; ind = np.where(py>-999.)
+        print inleg[index]
+        print lhist[ind],py[ind],nelgs_p9[index,ind]-nelgs_p1[index,ind]
         ax.plot(lhist[ind],py[ind],color=cols[index+1],linestyle='-',label=inleg[index])
         if(index==0):
             y=nelgs_p1[index,:] ; ax.plot(lhist[ind],y[ind],color=cols[index+1],linestyle='--')
@@ -258,6 +256,8 @@ for iz,zsnap in enumerate(snap_list):
     # Plot eBOSS
     ii = 3
     py = neboss_med ; ind = np.where(py>-999.)
+    print 'eBOSS'
+    print lhist[ind],py[ind],neboss_p9[ind]-neboss_p1[ind]
     ax.plot(lhist[ind],py[ind],color=cols[ii+1],linestyle='-',label=inleg[ii])
     #ax.plot(lhist[ind],neboss_p1[ind],color=cols[ii],linestyle='--')
     #ax.plot(lhist[ind],neboss_p9[ind],color=cols[ii],linestyle='--')
@@ -265,6 +265,8 @@ for iz,zsnap in enumerate(snap_list):
     # Plot DESI
     ii = 4
     py = ndesi_med ; ind = np.where(py>-999.)
+    print 'DESI'
+    print lhist[ind],py[ind],ndesi_p9[ind]-ndesi_p1[ind]
     ax.plot(lhist[ind],py[ind],color=cols[ii+1],linestyle='-',label=inleg[ii])
     #ax.plot(lhist[ind],ndesi_p1[ind],color=cols[ii],linestyle='--')
     #ax.plot(lhist[ind],ndesi_p9[ind],color=cols[ii],linestyle='--')

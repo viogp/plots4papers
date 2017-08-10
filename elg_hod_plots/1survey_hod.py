@@ -27,6 +27,7 @@ bands = ['RK','m2','m2']
 mcuts = [24.1,22.5,24]
 fcuts = [2.7*10.**-17., 3.5*10.**-17., 1.9*10.**-17.,10.**-17., 8*10.**-17.]
 surveys = ['DEEP2','VVDS-WIDE','VVDS-DEEP','eBOSS','DESI']
+inleg = ['DEEP2','VVDS-Wide','VVDS-Deep','eBOSS','DESI']
 
 # Initialize histogram
 lmin = 8.5
@@ -226,7 +227,7 @@ for index,fc in enumerate(fcuts):
     ax.set_xlabel(xtit) ; ax.set_ylabel(ytit)
     ax.set_xlim(xmin,xmax) ; ax.set_ylim(ymin,ymax) 
     #ax.text(xmax-(xmax-xmin)*0.25, ymin+(ymax-ymin)*0.02,\
-    #            surveys[index]+' cuts')
+    #            inleg[index]+' cuts')
 
     # Plot the model predictions
     leg1 = [] ; leg2 = []
@@ -279,7 +280,7 @@ for index,fc in enumerate(fcuts):
     #                              ["Centrals", "Satellites", "Orphans"],\
     #                              loc=1)
 
-    ltxt = surveys[index]+' cuts'
+    ltxt = inleg[index]+' cuts'
     first_legend = plt.legend(leg1[0],\
                                   [ltxt, "Flux cut"],\
                                   loc=1)
