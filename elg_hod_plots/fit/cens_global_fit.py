@@ -1,7 +1,7 @@
 import os.path, sys
 import numpy as np
 import hod_functions as hf
-#import metropolis as m
+import metropolis as m
 import emcee
 from matplotlib import pyplot as plt
 from distinct_colours import get_distinct
