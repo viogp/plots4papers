@@ -1,6 +1,7 @@
 #! /usr/bin/env python
-from scipy.special import erf,erfc
+import sys
 import numpy as np
+from scipy.special import erf,erfc
 from fractions import Fraction
 
 def lCen_Z05(x,Mmin,sig): # Eq. from Zheng, Z et al. 2005
@@ -118,28 +119,27 @@ def lCen_gasym(x,p0):
     # The masses are np.expected as np.log10(M)
     fb,mb,sigb,fd,md,sigd = p0
 
-    y = np.zeros(shape=(len(x))) ; y.fill(-999.)
-    if (mb>0. and sigb>0. and md>0 and sigd>0.):
+    y = np.zeros(shape=(len(x))) ; y.fill(-np.inf)
+    if (mb>0. and sigb>0. and md>0. and sigd>0.):
         ind = np.where(x>0.) ; negs = np.shape(ind)[1]-np.shape(x)[0]
         if (negs>0):
-            print 'lCen_gasym, WARNING: Negative values as input'
+            print 'lCen_gasym, WARNING: Very small values as input'
 
         # Bulges ~ Step function
         step = (1.+ erf((x[ind]-mb)/sigb))
 
         # Disks ~ Asymmetric Gaussian
-        inexp = (2*md + fd*sigd**2 - 2*x[ind])*fd/2.
+        inexp = (2*md + fd*sigd**2 - 2*x[ind])*fd/2. 
         mgau = np.exp(inexp)*erfc((md+fd*sigd**2-x[ind])/(np.sqrt(2.)*sigd))
 
         # Normalised total
         y[ind] = step*fb/2. + mgau*fd/2.
-        
-    ind = np.where(y<=0.)
-    if (np.shape(ind)[1]>1):
-        y[ind] = -np.inf
+
+    # Take log10
     ind = np.where(y>0.)
     if (np.shape(ind)[1]>1):
         y[ind] = np.log10(y[ind])
+
     return y
 
 def lCen_g(lx,p0): 
@@ -155,6 +155,63 @@ def lCen_g(lx,p0):
 
         # Bulges ~ Step function
         step = (1.+ erf((lx[ind]-mb)/sigb))
+
+        # Disks ~ Gaussian
+        inexp = ((lx-md)**2)/(-2.*sigd**2)
+        gau = np.exp(inexp)/np.sqrt(2.*np.pi*sigd**2)
+
+        # Normalised total
+        y[ind] = step*fb/2. + gau*fd/2.
+        
+    ind = np.where(y<=0.)
+    if (np.shape(ind)[1]>1):
+        y[ind] = -np.inf
+    ind = np.where(y>0.)
+    if (np.shape(ind)[1]>1):
+        y[ind] = np.log10(y[ind])
+    return y
+
+def lCen_gasym2(x,p0): 
+    # Using an np.exponentially modified Gaussian
+    # The masses are np.expected as np.log10(M)
+    fb,mb,fd,ad,md,sigd = p0
+
+    y = np.zeros(shape=(len(x))) ; y.fill(-np.inf)
+    if (mb>0. and md>0. and sigd>0.):
+        ind = np.where(x>0.) ; negs = np.shape(ind)[1]-np.shape(x)[0]
+        if (negs>0):
+            print 'lCen_gasym2, WARNING: Very small values as input'
+
+        # Bulges ~ Step function
+        step = (1.+ erf((x[ind]-mb)/sigd))
+
+        # Disks ~ Asymmetric Gaussian
+        inexp = (2*md + ad*sigd**2 - 2*x[ind])*ad/2. 
+        mgau = np.exp(inexp)*erfc((md+ad*sigd**2-x[ind])/(np.sqrt(2.)*sigd))
+
+        # Normalised total
+        y[ind] = step*fb/2. + mgau*fd/2.
+
+    # Take log10
+    ind = np.where(y>0.)
+    if (np.shape(ind)[1]>1):
+        y[ind] = np.log10(y[ind])
+
+    return y
+
+def lCen_g2(lx,p0): 
+    # Using a step function plus a Gaussian
+    # The masses are np.expected as np.log10(M)
+    fb,mb,fd,md,sigd = p0
+
+    y = np.zeros(shape=(len(lx))) ; y.fill(-999.)
+    if (mb>0. and md>0 and sigd>0.):
+        ind = np.where(lx>0.) ; negs = np.shape(ind)[1]-np.shape(lx)[0]
+        if (negs>0):
+            print 'lCen_g, WARNING: Negative values as input'
+
+        # Bulges ~ Step function
+        step = (1.+ erf((lx[ind]-mb)/sigd))
 
         # Disks ~ Gaussian
         inexp = ((lx-md)**2)/(-2.*sigd**2)
