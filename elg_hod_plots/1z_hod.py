@@ -12,14 +12,14 @@ import mpl_style
 plt.style.use(mpl_style.style1)
 
 path = '/gpfs/data/violeta/Galform_Out/v2.6.0/aquarius_trees/'
-model = 'MillGas/gp15newmg/' #model = 'MillGas/gp14/'
+model = 'MillGas/gp15newmg.anders/' #model = 'MillGas/gp14/'
 
 #############################
 line = 'OII3727' ; lline = '[OII]'
 outdir = '/gpfs/data/violeta/lines/desi_hod_o2/'
 #############################
 
-snap_list = [42]#[44, 42, 40, 37, 34] #MillGas    
+snap_list = [44, 42, 40, 37, 34] #MillGas    
 
 nvol = 64
 
@@ -52,7 +52,7 @@ xtit = "${\\rm log}_{10}({\\rm M_{halo}}/M_{\odot}h^{-1})$"
 ytit = "${\\rm log}_{10}(\\langle N\\rangle _{\\rm [OII]})$"
 
 xmin = 10. ; xmax = 15.
-ymin = -3. ; ymax = 1.
+ymin = -3. ; ymax = 2.
 
 # Loop over the redshifts of interest
 for iz,zsnap in enumerate(snap_list):
@@ -219,7 +219,7 @@ for iz,zsnap in enumerate(snap_list):
     ax = plt.subplot()
     ax.set_xlabel(xtit) ; ax.set_ylabel(ytit)
     ax.set_xlim(xmin,xmax) ; ax.set_ylim(ymin,ymax) 
-    ax.text(xmax-(xmax-xmin)*0.2, ymin+(ymax-ymin)*0.05, 'z='+szz)
+    ax.text(xmin+(xmax-xmin)*0.05, ymax-(ymax-ymin)*0.25, 'z='+szz)
 
     # Plot the model predictions
     leg2 = []
@@ -228,35 +228,35 @@ for iz,zsnap in enumerate(snap_list):
         if (np.shape(indh)[1]<1): continue
         print index,ileg,np.shape(indh)[1]
 
-        py = 0. ; py = nm[index,:] ; nall = sum(py)
-        x = lhist[indh] ; y = np.zeros(len(x))
-        yall = py[indh]/nh[indh] ; ind = np.where(yall>0.) 
-        y[ind] = np.log10(yall[ind]) ; ind = np.where(y < 0.)
-        ax.plot(x[ind],y[ind],color=cols[index]\
+        py = nm[index,:] ; nall = sum(py)
+        x = lhist[indh] 
+        yall = py[indh]/nh[indh] 
+        y = np.log10(yall) 
+        ax.plot(x,y,color=cols[index]\
                              ,label=inleg[index])
 
         if (index==0):
-            py = 0. ; py = nc[index,:] ; ncen = sum(py)
-            x = lhist[indh]  ; y = np.zeros(len(x))
-            ycen = py[indh]/nh[indh] ; ind = np.where(ycen>0.) 
-            y[ind] = np.log10(ycen[ind]) ;ind = np.where(y < 0.)
-            l1, = plt.plot(x[ind],y[ind],color=cols[index],\
+            py = nc[index,:] ; ncen = sum(py)
+            x = lhist[indh]  
+            ycen = py[indh]/nh[indh] 
+            y = np.log10(ycen) 
+            l1, = plt.plot(x,y,color=cols[index],\
                          linestyle='--')
 
-            py = 0. ; py = ns[index,:]  ; nsat = sum(py)
-            x = lhist[indh] ; y = np.zeros(len(x))
-            ysat = py[indh]/nh[indh] ; ind = np.where(ysat>0.) 
-            y[ind] = np.log10(ysat[ind]) ; ind = np.where(y < 0.)
-            l2, = plt.plot(x[ind],y[ind],color=cols[index],\
+            py = ns[index,:]  ; nsat = sum(py)
+            x = lhist[indh] 
+            ysat = py[indh]/nh[indh]
+            y = np.log10(ysat) 
+            l2, = plt.plot(x,y,color=cols[index],\
                                   linestyle=':')
 
             leg2.append([l1,l2])
 
-            #py = 0. ; py = n2[index,:]  ; nsat2 = sum(py)
-            #x = lhist[indh] ; y = np.zeros(len(x))
-            #y2 = py[indh]/nh[indh] ; ind = np.where(y2>0.) 
-            #y[ind] = np.log10(y2[ind]) ; ind = np.where(y < 0.)
-            #l3, = plt.plot(x[ind],y[ind],color=cols[index],\
+            #py = n2[index,:]  ; nsat2 = sum(py)
+            #x = lhist[indh]
+            #y2 = py[indh]/nh[indh]
+            #y = np.log10(y2)
+            #l3, = plt.plot(x,y,color=cols[index],\
             #                      linestyle='-.')
             #leg2.append([l3])
 
@@ -266,7 +266,7 @@ for iz,zsnap in enumerate(snap_list):
     #                              loc=1)
     first_legend = plt.legend(leg2[0],\
                                   ["Centrals", "Satellites"],\
-                                  loc=1)
+                                  loc=4)
     first_legend.draw_frame(False)
 
     leg = plt.legend(loc=2,\
