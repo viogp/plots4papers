@@ -18,7 +18,7 @@ narg = len(sys.argv)
 if(narg == 2):
     iz = sys.argv[1]
 else:
-    iz = '0.9' 
+    iz = '0.91' #'0.76' 
 #############################
 
 model = 'MillGas/gp15newmg/'
@@ -31,15 +31,14 @@ plotfile = plotdir+model+ 'zspace_z'+iz+'_gflux.pdf'
 # Surveys
 #surveys = ['4cute_g22.0_z.dat','4cute_g22.2_z.dat','4cute_g22.5_z.dat','gcut_4cute_gflux_z.dat']
 #surveys = ['fm16_4cute_gflux_z.dat','5fm16_4cute_gflux_z.dat','fm17_4cute_gflux_z.dat','5fm17_4cute_gflux_z.dat','fm18_4cute_gflux_z.dat'] 
+#surveys = ['fm17_CUTExi_gflux_z.dat','f5m17_CUTExi_gflux_z.dat','fm16_CUTExi_gflux_z.dat','f5m16_CUTExi_gflux_z.dat','gcut_CUTExi_gflux_z.dat']
 #inleg = surveys
 
-surveys=['fm16_4cute_gflux_z.dat','fm18_4cute_gflux_z.dat','gcut_4cute_gflux_z.dat','4cute_g22.2_z.dat']
+surveys=['fm16_CUTExi_gflux_z.dat','fm18_CUTExi_gflux_z.dat','gcut_CUTExi_gflux_z.dat','4cute_g22.2_z.dat']
 inleg = ['$F_{[OII]}>10^{-16}erg\,s^{-1}cm^{-2}$','$F_{[OII]}>10^{-18}erg\,s^{-1}cm^{-2}$','20<g<22.8 (Favole cut)','20<g<22.2']
 
-#sn = ['44','42','40','37','34']
-#zz = ['0.6','0.75','0.9','1.2','1.5']
-sn = ['40']
-zz = ['0.9']
+sn = ['44','42','40','37','34']
+zz = ['0.62','0.76','0.91','1.17','1.50']
 
 isn = zz.index(iz) 
 szz = 'z='+zz[isn]
@@ -92,7 +91,7 @@ ox   = so[ind] #*ho
 oy   = so[ind]*xio[ind]
 oerr = so[ind]*erro[ind] 
 ax.errorbar(ox,oy, yerr=oerr, color=cols[0], ecolor=cols[0],\
-                label ='Favole et al. 2015', fmt = 'o')
+                label ='Favole et al. 2016', fmt = 'o')
 
 # Galaxy predictionsmv 
 pathgal = '/gpfs/data/violeta/Galform_Out/v2.6.0/aquarius_trees/'+model
