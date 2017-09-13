@@ -45,7 +45,7 @@ xtit = "${\\rm log}_{10}({\\rm M_{halo}}/M_{\odot}h^{-1})$"
 ytit = "${\\rm log}_{10}(\\langle N\\rangle _{\\rm [OII]})$"
 
 xmin = 10. ; xmax = 15.
-ymin = -3. ; ymax = 1.
+ymin = -3. ; ymax = 2.
 
 # Loop over the redshifts of interest
 for index,fc in enumerate(fcuts):
@@ -162,7 +162,7 @@ for index,fc in enumerate(fcuts):
                         icut = mcuts[index]
                         ind = np.where((mag<icut) &\
                                            (lum_ext>lcut)  & (gtype>0))
-                    elif index==4: #eBOSS
+                    elif index==3: #eBOSS
                         ind = np.where((g>22.1) & (g<22.8) & \
                                            (gr>0.3) & (gr<0.7) & \
                                            (rz>0.25) & (rz<1.4) & \
@@ -236,42 +236,42 @@ for index,fc in enumerate(fcuts):
         indh = np.where(nh > 0) ; nhalos = sum(nh)
         if (np.shape(indh)[1]<1): continue
 
-        py = 0. ; py = nm[iz,:] ; nall = sum(py)
-        x = lhist[indh] ; y = np.zeros(len(x))
-        yall = py[indh]/nh[indh] ; ind = np.where(yall>0.) 
-        y[ind] = np.log10(yall[ind]) ; ind = np.where(y < 0.)
-        l1, = ax.plot(x[ind],y[ind],color=cols[iz],\
+        py = nm[iz,:] ; nall = sum(py)
+        x = lhist[indh] 
+        yall = py[indh]/nh[indh] 
+        y = np.log10(yall)
+        l1, = ax.plot(x,y,color=cols[iz],\
                              label=zleg[iz])
 
-        py = 0. ; py = nf[iz,:] ; nfcut = sum(py)
-        x = lhist[indh] ; y = np.zeros(len(x))
-        yall = py[indh]/nh[indh] ; ind = np.where(yall>0.) 
-        y[ind] = np.log10(yall[ind]) ; ind = np.where(y < 0.)
-        l2, = ax.plot(x[ind],y[ind],color=cols[iz],\
+        py = nf[iz,:] ; nfcut = sum(py)
+        x = lhist[indh] 
+        yall = py[indh]/nh[indh] 
+        y = np.log10(yall) 
+        l2, = ax.plot(x,y,color=cols[iz],\
                     linestyle='--')
 
         leg1.append([l1,l2])
 
         #if (iz==ntypes-1):
-        #    py = 0. ; py = nc[iz,:] ; ncen = sum(py)
-        #    x = lhist[indh]  ; y = np.zeros(len(x))
-        #    ycen = py[indh]/nh[indh] ; ind = np.where(ycen>0.) 
-        #    y[ind] = np.log10(ycen[ind]) ;ind = np.where(y < 0.)
-        #    l1, = plt.plot(x[ind],y[ind],color=cols[iz],\
+        #    py = nc[iz,:] ; ncen = sum(py)
+        #    x = lhist[indh] 
+        #    ycen = py[indh]/nh[indh]
+        #    y = np.log10(ycen)
+        #    l1, = plt.plot(x,y,color=cols[iz],\
         #                 linestyle='--')
         #
-        #    py = 0. ; py = ns[iz,:]  ; nsat = sum(py)
-        #    x = lhist[indh] ; y = np.zeros(len(x))
-        #    ysat = py[indh]/nh[indh] ; ind = np.where(ysat>0.) 
-        #    y[ind] = np.log10(ysat[ind]) ; ind = np.where(y < 0.)
-        #    l2, = plt.plot(x[ind],y[ind],color=cols[iz],\
+        #    py = ns[iz,:]  ; nsat = sum(py)
+        #    x = lhist[indh]
+        #    ysat = py[indh]/nh[indh]
+        #    y = np.log10(ysat) 
+        #    l2, = plt.plot(x,y,color=cols[iz],\
         #                          linestyle=':')
         #
-        #    py = 0. ; py = n2[iz,:]  ; nsat2 = sum(py)
-        #    x = lhist[indh] ; y = np.zeros(len(x))
-        #    y2 = py[indh]/nh[indh] ; ind = np.where(y2>0.) 
-        #    y[ind] = np.log10(y2[ind]) ; ind = np.where(y < 0.)
-        #    l3, = plt.plot(x[ind],y[ind],color=cols[iz],\
+        #    py = n2[iz,:]  ; nsat2 = sum(py)
+        #    x = lhist[indh]
+        #    y2 = py[indh]/nh[indh]
+        #    y = np.log10(y2)
+        #    l3, = plt.plot(x,y,color=cols[iz],\
         #                          linestyle='-.')
         #    leg2.append([l1,l2,l3])
 
